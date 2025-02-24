@@ -1,0 +1,81 @@
+from random import randint
+
+def shuffle_list(words):
+    n = len(words)
+    i = n - 1
+    while i > 0:
+        j = randint(0, i)
+        words[i], words[j] = words[j], words[i]
+        i = i - 1
+
+def remove_duplications(words):
+    result = ""
+    i = 0
+    while i < len(words):
+        j = 0
+        find = False
+        while j < len(result):
+            if words[i] == result[j]:
+                find = True
+            j = j + 1
+        if find == False:
+            result = result + words[i]
+        i = i + 1
+    return result
+
+def play_round(words_guess):
+    GAME = ""
+    shuffle_list(words_guess)
+    words_select = []
+    i = 0
+    while i < 3 and i < len(words_guess):
+        words_select.append(words_guess[i])
+        i = i + 1
+    j = 0
+    while j < len(words_select):
+        print(words_select[j])
+        GAME = GAME + words_select[j]
+        j = j + 1
+    GAME_without_duplications = remove_duplications(GAME)
+    print(GAME_without_duplications + " 3 mots à trouver")
+    
+    score = 0
+    guesses = []
+    while len(guesses) < len(words_select):
+        guess = input(f"C'est le moment de deviner un mot ! ({len(guesses) + 1}/{len(words_select)}): ")
+        if guess in words_select and guess not in guesses:
+            print("GREAT, +1 point")
+            guesses.append(guess)
+            score = score + 1
+        elif guess in guesses:
+            print("Oups , mot a déjà été utilisé.")
+        else:
+            print("Aie , ce mot est incorrect !")
+    
+    return score
+
+def scrabble_gameeees():
+    M1 = ["lent","arbre","jambe","volant","fruit","colle","chat","souris","pomme","pluie","rose","ciel","lune","mer","pain","lait","joli",
+          "bise","neige","fleur","pied","corde","lien"]
+    M2 = ["patient","dauphin","orange","chapeau","pyjama","armoire","mouette","poumon","banquier","montagne","poisson","chocolat","tournesol",
+          "valise","sourire"]
+    M3 = ["exception","moustache","chaussons","ordinateur","citrouille","lunettes","aventure","fantastique","piscine","cuisinier",
+          "dictionnaire","combinaison","exercice","sciences"]
+    
+    total_score = 0
+    
+    # Première manche
+    print("Première manche, Difficulté : Mots en 4-5 lettres // START !")
+    total_score = total_score + play_round(M1)
+    
+    # Deuxième manche
+    print("Deuxième manche, Difficulté : Mots en 6-8 lettres // START !")
+    total_score = total_score + play_round(M2)
+    
+    # Troisième manche
+    print("Troisième manche, Difficulté : Mots en 8-12 lettres // START !")
+    total_score = total_score + play_round(M3)  # Corriger ici
+    
+    print(f"Vous avez terminé avec un score final de .. {total_score} points , Bravo ^^ !")
+
+scrabble_gameeees()
